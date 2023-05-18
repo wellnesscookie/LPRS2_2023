@@ -33,6 +33,7 @@
 
 - IoT
 	- Self sustaning plant
+		- Water pump and 5l balloons
 	- Vrata s karticom
 	- Tužibaba
 	- Sauna
