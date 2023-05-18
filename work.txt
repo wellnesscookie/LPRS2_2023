@@ -1,0 +1,34 @@
+
+- ODB
+	- Detection is car locket over OBD2 port
+	- ECU OBD2 diag port
+
+- CNC
+	CNC panel for GRBL control (Candle)
+	CNC handle for GRBL control (Candle)
+	- On change:
+		- Msg example: enc=-1 axis=3 rate=2 stop=0
+		- Msg example: jog_up=1 stop=0
+	- SW: 
+
+- Self sustaning plant
+- MAX1000 integration to Arduino
+
+Vrata s karticom
+GSM/GPRS communication
+Radar
+Power Meter
+Autonomy for Power Meter
+IoT for Power Meter
+Sauna
+HVAC ctrl
+Robot Safety
+AC power regulator
+Arduino Robot Arm
+Arduino Chassis
+Temperature logger
+Temperature recorder
+I2C Time-Triggered Network
+RF network
+Tužibaba
+Pegla
