@@ -9,7 +9,7 @@
 	- On change:
 		- Msg example: enc=-1 axis=3 rate=2 stop=0
 		- Msg example: jog_up=1 stop=0
-	- SW: 
+	
 
 - Self sustaning plant
 - MAX1000 integration to Arduino
