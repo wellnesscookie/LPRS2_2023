@@ -3,3 +3,6 @@
 		- Example URL: https://lastminuteengineers.com/arduino-micro-sd-card-module-tutorial/
 		- Note: Na URL-u se nalazi jedan SD citac (koji nije kao nas), ali ima sve iste pinove i isto se povezuje kao trenutni. 
 			Na jednoj slici su prikazani kako su nazvani pinovi, a na drugoj slici kako se povezuju kojim redom.
+			
+	OV7670 Arduino camera:
+		- Example URL: https://circuitdigest.com/microcontroller-projects/how-to-use-ov7670-camera-module-with-arduino
