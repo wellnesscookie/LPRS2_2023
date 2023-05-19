@@ -6,3 +6,9 @@
 			
 	OV7670 Arduino camera:
 		- Example URL: https://circuitdigest.com/microcontroller-projects/how-to-use-ov7670-camera-module-with-arduino
+		
+	DS1302 RTC Clock:
+		- Example URL: https://electropeak.com/learn/interfacing-ds1302-real-time-clock-rtc-module-with-arduino/
+		
+	RC522 RFID Module:
+		- Example URL: https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/
