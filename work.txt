@@ -6,6 +6,9 @@
 			
 	OV7670 Arduino camera:
 		- Example URL: https://circuitdigest.com/microcontroller-projects/how-to-use-ov7670-camera-module-with-arduino
+		- Requirements:
+			- 2x 10K Ohm
+			- 2x 4.7K Ohm
 		
 	DS1302 RTC Clock:
 		- Example URL: https://electropeak.com/learn/interfacing-ds1302-real-time-clock-rtc-module-with-arduino/
