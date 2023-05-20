@@ -15,3 +15,9 @@
 		
 	RC522 RFID Module:
 		- Example URL: https://lastminuteengineers.com/how-rfid-works-rc522-arduino-tutorial/
+		
+		
+Arduino UNO pin scheme:
+https://www.circuito.io/blog/arduino-uno-pinout/
+ATMEGA328P docs:
+https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
