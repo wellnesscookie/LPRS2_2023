@@ -24,3 +24,4 @@ https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcont
 
 Something about PWM and xclk's:
 https://forum.arduino.cc/t/arduino-1-mhz-2mhz-4mhz-8-mhz-clock-output/415947
+https://arduino.stackexchange.com/questions/16698/arduino-constant-clock-output
