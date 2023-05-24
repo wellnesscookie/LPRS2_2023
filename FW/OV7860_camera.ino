@@ -996,7 +996,7 @@ void arduinoUnoInut(void) {
     /* Setup the 8mhz PWM clock
 
   * This will be on pin 11*/
-
+  /**
   DDRB |= (1 << 3);//pin 11
 
   ASSR &= ~(_BV(EXCLK) | _BV(AS2));
@@ -1006,6 +1006,26 @@ void arduinoUnoInut(void) {
   TCCR2B = (1 << WGM22) | (1 << CS20);
 
   OCR2A = 0;//(F_CPU)/(2*(X+1))
+
+  DDRC &= ~15;//low d0-d3 camera
+
+  DDRD &= ~252;//d7-d4 and interrupt pins
+
+  _delay_ms(3000);
+  */
+  DDRB |= (1 << 1);//pin 9
+
+  ASSR &= ~(_BV(EXCLK) | _BV(AS2));
+
+  TCCR1A = (1 << COM1A0) | (1 << WGM11) | (1 << WGM10);
+
+  TCCR1B |= (1 << CS10);
+  TCCR1B &= ~((1 << CS12) |  (1 << CS11));
+  TCCR1A &= ~(1 << COM1A1);
+  TCCR1B |= ((1 << WGM13) | (1 << WGM12));
+  TCNT1 = 0;
+  OCR1A = 0;
+
 
   DDRC &= ~15;//low d0-d3 camera
 
