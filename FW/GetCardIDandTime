@@ -20,7 +20,7 @@ MFRC522 mfrc522(pinSS, pinRST);   // Creates MFRC522 instance.
 MFRC522::MIFARE_Key key;          // Creates MIFARE key instance.
 // UID white card   33EDD215
 void setup()
-{
+{  
   pinMode(RX, OUTPUT);
   pinMode(TX, OUTPUT);
   digitalWrite(RX, 0);
@@ -38,8 +38,11 @@ void setup()
   while (!successRead);
   for ( int i = 0; i < mfrc522.uid.size; i++ )  // You can add multiple cards to read in the for loop.
   {
-    EEPROM.write(i, readCard[i] );     // Saves RFID cards UID to EEPROM.
+    EEPROM.write(i, readCard[i]);     // Saves RFID cards UID to EEPROM.
   }
+  Rtc.Begin();
+  RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
+  Rtc.SetDateTime(compiled);
 }
 
 void loop()
@@ -49,7 +52,6 @@ void loop()
 
 int getID() // Function that will read and print the RFID cards UID.
 {
-  RtcDateTime now = Rtc.GetDateTime();
   if ( ! mfrc522.PICC_IsNewCardPresent())  // If statement that looks for new cards.
   {
     return 0;
@@ -59,16 +61,16 @@ int getID() // Function that will read and print the RFID cards UID.
   {
     return 0;
   }
-  
+  RtcDateTime now = Rtc.GetDateTime();
+  printDateTime(now);
   Serial.print("UID: ");    
   for (int i = 0; i < mfrc522.uid.size; i++) {  
     readCard[i] = mfrc522.uid.uidByte[i];   // Reads RFID cards UID.
     Serial.print(readCard[i], HEX);     // Prints RFID cards UID to the serial monitor.
   }
-
+  
   mfrc522.PICC_HaltA();     // Stops the reading process.
   Serial.println();
-  printDateTime(now);
 }
 
 #define countof(a) (sizeof(a) / sizeof(a[0]))
@@ -79,13 +81,13 @@ void printDateTime(const RtcDateTime& dt)
 
     snprintf_P(datestring, 
             countof(datestring),
-            PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
-            dt.Month(),
-            dt.Day(),
-            dt.Year(),
+            PSTR("%02u-%02u-%02u_%02u/%02u/%04u"),
             dt.Hour(),
             dt.Minute(),
-            dt.Second() );
+            dt.Second(),
+            dt.Month(),
+            dt.Day(),
+            dt.Year());
     Serial.print(datestring);
     Serial.println();
 }
