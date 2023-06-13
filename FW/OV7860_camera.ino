@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <SPI.h> 
+#include <SD.h>
 
 #include <avr/io.h>
 
@@ -7,6 +9,10 @@
 #include <util/delay.h>
 
 #include <avr/pgmspace.h>
+
+#define RX 0
+
+#define TX 1
 
 #define F_CPU 16000000UL
 
@@ -989,30 +995,8 @@ void camInit(void){
 
 void arduinoUnoInut(void) {
 
-  cli();//disable interrupts
+  //cli();//disable interrupts
 
-  
-
-    /* Setup the 8mhz PWM clock
-
-  * This will be on pin 11*/
-  /**
-  DDRB |= (1 << 3);//pin 11
-
-  ASSR &= ~(_BV(EXCLK) | _BV(AS2));
-
-  TCCR2A = (1 << COM2A0) | (1 << WGM21) | (1 << WGM20);
-
-  TCCR2B = (1 << WGM22) | (1 << CS20);
-
-  OCR2A = 0;//(F_CPU)/(2*(X+1))
-
-  DDRC &= ~15;//low d0-d3 camera
-
-  DDRD &= ~252;//d7-d4 and interrupt pins
-
-  _delay_ms(3000);
-  */
   DDRB |= (1 << 1);//pin 9
 
   ASSR &= ~(_BV(EXCLK) | _BV(AS2));
@@ -1026,34 +1010,20 @@ void arduinoUnoInut(void) {
   TCNT1 = 0;
   OCR1A = 0;
 
-
+  //11110000
   DDRC &= ~15;//low d0-d3 camera
 
-  DDRD &= ~252;//d7-d4 and interrupt pins
+  DDRD &= ~253;//d7-d4 and interrupt pins
 
   _delay_ms(3000);
 
   
 
-    //set up twi for 100khz
+  //set up twi for 100khz
 
   TWSR &= ~3;//disable prescaler for TWI
 
-  TWBR = 72;//set to 100khz
-
-  
-
-    //enable serial
-
-  UBRR0H = 0;
-
-  UBRR0L = 1;//0 = 2M baud rate. 1 = 1M baud. 3 = 0.5M. 7 = 250k 207 is 9600 baud rate.
-
-  UCSR0A |= 2;//double speed aysnc
-
-  UCSR0B = (1 << RXEN0) | (1 << TXEN0);//Enable receiver and transmitter
-
-  UCSR0C = 6;//async 1 stop bit 8bit char no parity bits
+  TWBR = 72;//set to 100khz  
 
 }
 
@@ -1072,31 +1042,49 @@ void StringPgm(const char * str){
 
 }
 
-static void captureImg(uint16_t wg, uint16_t hg){
+static void captureImg(String file_name, uint16_t wg, uint16_t hg){
 
   uint16_t y, x;
 
   StringPgm(PSTR("*RDY*"));
 
+  File dataFile = SD.open(file_name + ".csv", FILE_WRITE);
+
+  if (!dataFile) {
+    Serial.println("Failure opening file");
+    Serial.flush();
+     return;
+  }
+
+  Serial.println("Success opening file");
+  Serial.flush();
+
   while (!(PIND & 8));//wait for high
 
   while ((PIND & 8));//wait for low
 
-    y = hg;
+  y = hg;
+
 
   while (y--){
 
-        x = wg;
+    x = wg;
 
       //while (!(PIND & 256));//wait for high
 
+    byte dataBuffer[320];
     while (x--){
 
+      
       while ((PIND & 4));//wait for low
 
-            UDR0 = (PINC & 15) | (PIND & 240);
+      dataBuffer[319-x] = (PINC & 15) | (PIND & 240);
 
-          while (!(UCSR0A & (1 << UDRE0)));//wait for byte to transmit
+      /** UNCOMMENT
+      //UDR0 = (PINC & 15) | (PIND & 240);
+
+      //while (!(UCSR0A & (1 << UDRE0)));//wait for byte to transmit*/
+      
 
       while (!(PIND & 4));//wait for high
 
@@ -1105,17 +1093,42 @@ static void captureImg(uint16_t wg, uint16_t hg){
       while (!(PIND & 4));//wait for high
 
     }
+    dataFile.write(dataBuffer, 320);
 
     //  while ((PIND & 256));//wait for low
 
   }
-
+    dataFile.close();
+    Serial.println("done writing");
+    Serial.flush();
     _delay_ms(100);
 
 }
 
-void setup(){
+int CS_Pin = 10;
 
+void setup(){  
+
+  Serial.begin(1000000);
+
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+ 
+  if (SD.begin(CS_Pin)) {
+    Serial.println("SD Success!");
+    Serial.flush();
+  } else {
+    Serial.println("SD Failure!");
+    Serial.flush();
+    while(true);
+    return;
+  }
+  
+  delay(1000);
+
+  Serial.println("Ready");
+  Serial.flush();
   arduinoUnoInut();
 
   camInit();
@@ -1124,13 +1137,54 @@ void setup(){
 
   setColor();
 
- writeReg(0x11, 10); //Earlier it had the value:writeReg(0x11, 12); New version works better for me :) !!!!
+  writeReg(0x11, 10); //Earlier it had the value:writeReg(0x11, 12); New version works better for me :) !!!!
+
+  pinMode(CS_Pin, OUTPUT);
+
+  pinMode(0, 0);
+  pinMode(1, 0);
+  digitalWrite(1, 0);
+
+  
 
 }
 
 
 void loop(){
 
-  captureImg(320, 240);
+ String receivedString;
+
+ if (Serial.available() > 0) {
+    
+  receivedString = Serial.readString();
+
+  Serial.println("Received message via UART");
+  Serial.println(receivedString);
+  
+ } else {
+
+  return;
+ }
+
+ 
+ String timestamp = receivedString.substring(0, 8);
+ Serial.println("READ: " + timestamp);
+ Serial.flush();
+
+ String file_name  = timestamp + ".txt";
+
+ File myFile = SD.open(file_name, FILE_WRITE);
+
+ if (myFile) {
+
+    myFile.println(receivedString);
+    Serial.println("Successfully saved!");
+    myFile.close();
+ } else {
+    Serial.println("Error opening a .txt file");
+ }
+
+ captureImg(timestamp, 320, 240);
+ _delay_ms(10000);
 
 }
