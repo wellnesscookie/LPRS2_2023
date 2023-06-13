@@ -25,7 +25,7 @@ void setup()
   pinMode(TX, OUTPUT);
   digitalWrite(RX, 0);
   digitalWrite(TX, 0);
-  Serial.begin(9600);     // Starts the serial connection at 9600 baud rate.
+  Serial.begin(1000000);     // Starts the serial connection at 9600 baud rate.
   SPI.begin();            // Initiates SPI connection between RFID module and Arduino.
   mfrc522.PCD_Init();    // Initiates MFRC522 RFID module.
 
