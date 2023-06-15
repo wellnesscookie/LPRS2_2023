@@ -334,7 +334,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Servo_Current_Limiter.kicad_pro",
+    "filename": "Tuzibaba.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -415,18 +415,6 @@
     [
       "970e848f-2806-425f-bd12-6a3a88bd59df",
       ""
-    ],
-    [
-      "18a28627-1db1-4a0b-947d-f716714df9ad",
-      "ch0"
-    ],
-    [
-      "433263ad-421c-4d9d-9eb8-5270e1a68252",
-      "sub"
-    ],
-    [
-      "55a7c5af-48d1-4420-a68f-c464a7acc628",
-      "op"
     ]
   ],
   "text_variables": {}

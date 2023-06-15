@@ -354,7 +354,7 @@
         )
       )
     )
-    (symbol "Servo_Current_Limiter-cache:BC338" (pin_names (offset 0) hide) (in_bom yes) (on_board yes)
+    (symbol "Tuzibaba-cache:BC338" (pin_names (offset 0) hide) (in_bom yes) (on_board yes)
       (property "Reference" "Q" (id 0) (at 5.08 1.905 0)
         (effects (font (size 1.27 1.27)) (justify left))
       )
@@ -746,7 +746,7 @@
     (pin "3" (uuid 214eab20-ed07-4819-acde-281839c0173c))
   )
 
-  (symbol (lib_id "Servo_Current_Limiter-cache:BC338") (at 180.34 77.47 0) (mirror y) (unit 1)
+  (symbol (lib_id "Tuzibaba-cache:BC338") (at 180.34 77.47 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 72f8dffb-d06c-4897-91bc-b10ac3642e02)
     (property "Reference" "Q2" (id 0) (at 175.26 76.1999 0)
